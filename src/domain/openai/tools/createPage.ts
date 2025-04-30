@@ -1,18 +1,15 @@
 import { ChatCompletionTool } from "openai/resources/index";
-import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-import { CategorySchema } from "../../schemas/category";
+import { PageSchema } from "../../schemas/page";
 
-export const argsSchema = z.object({
-  categories: z.array(CategorySchema),
-});
+export const argsSchema = PageSchema;
 
 export const tool: ChatCompletionTool = {
   type: "function",
   function: {
-    name: "createCategories",
-    description: "カテゴリを作る関数",
+    name: "createPage",
+    description: "ページを生成するための関数",
     parameters: zodToJsonSchema(argsSchema),
   },
 };

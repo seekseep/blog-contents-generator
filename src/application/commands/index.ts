@@ -1,13 +1,15 @@
-import { generateCategoryPagesCommand } from "./generateCategoryPages";
-import { generateHomePageCommand } from "./generateHomePage";
-import { generateRootCategoriesCommand } from "./generateRootCategories";
-import { generateSubCategoriesCommand } from "./generateSubCategories";
-import { viewCategoryTreeCommand } from "./viewCategoryTree";
+import { generateCategoryPagesCommand } from "./generateCategoryPagesCommand";
+import { generateHomePageCommand } from "./generateHomePageCommand";
+import { generateRootCategoriesCommand } from "./generateRootCategoriesCommand";
+import { generateSectionsPagesCommand } from "./generateSectionsCommand";
+import { generateSubCategoriesCommand } from "./generateSubCategoriesCommand";
+import { viewCategoryTreeCommand } from "./viewCategoryTreeCommand";
 
 export const commands = [
+  generateCategoryPagesCommand,
   generateHomePageCommand,
   generateRootCategoriesCommand,
+  generateSectionsPagesCommand,
   generateSubCategoriesCommand,
   viewCategoryTreeCommand,
-  generateCategoryPagesCommand,
 ];

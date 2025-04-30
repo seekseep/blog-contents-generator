@@ -1,24 +1,23 @@
 import { z } from "zod";
 
 import { Category } from "@/domain/types";
-import { system, user } from "@/infrastructure/openai/util";
+import { user } from "@/infrastructure/openai/util";
 
-import * as createHugoPage from "../tools/createHugoPage";
+import { blogWriter } from "../messages/system";
+import { argsSchema, tool } from "../tools/createPage";
 import { PromptBuilderResult } from "./types";
 
-export function generateCategoryPagePrompt(
+export function buildgenerateCategoryPagePrompt(
   category: Category,
   siteSummary: string,
   parentCategories: Category[],
-): PromptBuilderResult<z.infer<typeof createHugoPage.argsSchema>> {
+): PromptBuilderResult<z.infer<typeof argsSchema>> {
   return [
     {
       model: "gpt-4",
       temperature: 0.7,
       messages: [
-        system(
-          `あなたは優れたブログ編集者です。出力は指定された関数を必ず使用してください。`,
-        ),
+        blogWriter,
         user(
           `以下の情報をもとに、Hugo 用のカテゴリページを作成してください。\n\n` +
             `## サイト全体の概要\n${siteSummary}\n\n` +
@@ -35,9 +34,9 @@ export function generateCategoryPagePrompt(
             `カテゴリページとしてふさわしいタイトル、本文、メタ情報（タイトル・説明）を生成し、指定された関数で出力してください。`,
         ),
       ],
-      tools: [createHugoPage.tool],
+      tools: [tool],
       tool_choice: "required",
     },
-    createHugoPage.argsSchema,
+    argsSchema,
   ];
 }

@@ -1,12 +1,13 @@
 import { z } from "zod";
 
 import { Category } from "@/domain/types";
-import { system, user } from "@/infrastructure/openai/util";
+import { user } from "@/infrastructure/openai/util";
 
+import { blogWriter } from "../messages/system";
 import * as createCategories from "../tools/createCategories";
 import { PromptBuilderResult } from "./types";
 
-export function generateSubCategoriesPrompt(
+export function buildGenerateSubCategoriesPrompt(
   siteSummary: string,
   parentCategory: Category,
   count: number,
@@ -16,9 +17,7 @@ export function generateSubCategoriesPrompt(
       model: "gpt-4",
       temperature: 0.7,
       messages: [
-        system(
-          `あなたは優れたブログ編集者です。出力は指定された関数を必ず使用してください。`,
-        ),
+        blogWriter,
         user(
           "以下の要件に従って、小カテゴリ（サブカテゴリ）のリストを作成してください。",
           "# 要件",

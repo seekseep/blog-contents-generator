@@ -1,9 +1,11 @@
 import { z } from "zod";
 
 import { CategorySchema } from "./schemas/category";
-import { HugoFrontMatterSchema } from "./schemas/hugoFrontMatter";
-import { HugoPageSchema } from "./schemas/hugoPage";
+import { PageFrontMatterSchema, PageSchema } from "./schemas/page";
+import { SectionPageOutlineSchema, SectionSchema } from "./schemas/section";
 
-export type HugoPage = z.infer<typeof HugoPageSchema>;
-export type HugoFrontMatter = z.infer<typeof HugoFrontMatterSchema>;
+export type Page = z.infer<typeof PageSchema>;
+export type PageFrontMatter = z.infer<typeof PageFrontMatterSchema>;
 export type Category = z.infer<typeof CategorySchema>;
+export type Section = z.infer<typeof SectionSchema>;
+export type SectionPageOutline = z.infer<typeof SectionPageOutlineSchema>;

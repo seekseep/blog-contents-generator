@@ -2,12 +2,9 @@ import { Category } from "../../domain/types";
 import { Command } from "../types";
 import { readCategories } from "../util/category";
 
-export const viewCategoryTreeCommand: Command<void> = {
+export const viewCategoryTreeCommand: Command = {
   name: "カテゴリツリーを閲覧する",
   description: "現在登録されているカテゴリ構造をツリー表示します",
-  askParams: async () => {
-    return;
-  },
   execute: async () => {
     const categories = readCategories();
 

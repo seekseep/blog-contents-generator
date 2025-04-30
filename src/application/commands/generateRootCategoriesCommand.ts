@@ -1,7 +1,7 @@
 import { number } from "@inquirer/prompts";
 import ora from "ora";
 
-import { buildGenerateRootCategoriesPrompt } from "@/domain/openai/prompt/generateRootCategories";
+import { buildGenerateRootCategoriesPrompt } from "@/domain/openai/prompt/buildGenerateRootCategoriesPrompt";
 import { mergeCategories } from "@/domain/site";
 import { callOpenAIFunction } from "@/infrastructure/openai/client";
 
@@ -14,33 +14,23 @@ import {
 } from "../util/category";
 import { readPage } from "../util/page";
 
-type GenerateRootCategories = {
-  count: number;
-};
-
-export const generateRootCategoriesCommand: Command<GenerateRootCategories> = {
+export const generateRootCategoriesCommand: Command = {
   name: "ルートカテゴリの作成",
   description: "ルートカテゴリを作成します",
-  askParams: async () => {
+  execute: async () => {
     const count = await number({
       message: "作成するルートカテゴリの数:",
       default: 5,
       required: true,
     });
 
-    return { count };
-  },
-  execute: async ({ count }: GenerateRootCategories) => {
     const homePage = readPage("_index");
     if (!homePage) throw new ApplicationError("Home page not found");
 
-    const [prompt, argsSchema] = buildGenerateRootCategoriesPrompt(
-      homePage.body,
-      count,
-    );
-
     const spinner = ora("カテゴリを生成中...").start();
-    const result = await callOpenAIFunction(prompt, argsSchema);
+    const result = await callOpenAIFunction(
+      ...buildGenerateRootCategoriesPrompt(homePage.body, count),
+    );
     const categories = result.categories;
     spinner.stop();
 

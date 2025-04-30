@@ -1,6 +1,6 @@
-import { HugoFrontMatter, HugoPage } from "../types";
+import { Page, PageFrontMatter } from "../types";
 
-export function creatFrontMatterString(frontmatter: HugoFrontMatter) {
+export function creatFrontMatterString(frontmatter: PageFrontMatter): String {
   const lines: string[] = [];
 
   lines.push("---");
@@ -28,12 +28,12 @@ export function creatFrontMatterString(frontmatter: HugoFrontMatter) {
   return lines.join("\n");
 }
 
-export function buildPageFileContent(page: HugoPage): string {
+export function buildPageFileContent(page: Page): string {
   const frontMatterString = creatFrontMatterString(page.frontmatter);
   return frontMatterString + "\n" + page.body;
 }
 
-function parseFrontMatter(frontmatterString: string): HugoFrontMatter {
+function parseFrontMatter(frontmatterString: string): PageFrontMatter {
   const lines = frontmatterString.split("\n");
   const values: Record<string, any> = {};
 
@@ -52,7 +52,7 @@ function parseFrontMatter(frontmatterString: string): HugoFrontMatter {
   const slug = values.slug || "";
   const weight = values.weight ? parseInt(values.weight) : undefined;
   const author = values.author || "";
-  const frontmatter: HugoFrontMatter = {
+  const frontmatter: PageFrontMatter = {
     title,
     description,
     date,
@@ -66,7 +66,7 @@ function parseFrontMatter(frontmatterString: string): HugoFrontMatter {
   return frontmatter;
 }
 
-export function parsePageContent(fileContent: string): HugoPage | null {
+export function parsePageContent(fileContent: string): Page | null {
   const [frontmatterString, body] = fileContent.split("---").slice(1);
   const frontmatter = parseFrontMatter(frontmatterString);
   return { frontmatter, body };

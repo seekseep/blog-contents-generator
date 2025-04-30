@@ -1,21 +1,20 @@
 import { z } from "zod";
 
-import { system, user } from "@/infrastructure/openai/util";
+import { user } from "@/infrastructure/openai/util";
 
-import * as createHugoPage from "../tools/createHugoPage";
+import { blogWriter } from "../messages/system";
+import { argsSchema, tool } from "../tools/createPage";
 import { PromptBuilderResult } from "./types";
 
 export function buildGenerateHomePagePrompt(
   keyword: string,
-): PromptBuilderResult<z.infer<typeof createHugoPage.argsSchema>> {
+): PromptBuilderResult<z.infer<typeof argsSchema>> {
   return [
     {
       model: "gpt-4",
       temperature: 0.7,
       messages: [
-        system(
-          `あなたは優れたブログ編集者です。出力は指定された関数を必ず使用してください。`,
-        ),
+        blogWriter,
         user(
           "以下の要件に従って、サイトのトップページ用の記事データを作成してください。",
           "# 要件",
@@ -26,9 +25,9 @@ export function buildGenerateHomePagePrompt(
           "- 本文は今後の記事の方向性が分かるような内容にすること",
         ),
       ],
-      tools: [createHugoPage.tool],
+      tools: [tool],
       tool_choice: "required",
     },
-    createHugoPage.argsSchema,
+    argsSchema,
   ];
 }

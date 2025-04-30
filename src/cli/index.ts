@@ -7,8 +7,7 @@ export async function start() {
   while (!finished) {
     try {
       const command = await askCommand();
-      const params = await command.askParams();
-      await command.execute(params);
+      await command.execute();
     } catch (error) {
       if (error instanceof ApplicationError) {
         console.error("アプリケーションエラー:", error.message);

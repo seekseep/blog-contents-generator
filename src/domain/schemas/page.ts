@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const HugoFrontMatterSchema = z.object({
+export const PageFrontMatterSchema = z.object({
   title: z.string(),
   description: z.string(),
   date: z.string(),
@@ -11,4 +11,9 @@ export const HugoFrontMatterSchema = z.object({
   type: z.string().optional(),
   weight: z.number().optional(),
   author: z.string().optional(),
+});
+
+export const PageSchema = z.object({
+  frontmatter: PageFrontMatterSchema,
+  body: z.string(),
 });
