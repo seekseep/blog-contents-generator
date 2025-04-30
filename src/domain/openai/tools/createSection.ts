@@ -1,9 +1,13 @@
 import { ChatCompletionTool } from "openai/resources/index";
+import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-import { SectionSchema } from "../../schemas/section";
+import { SectionPageSchema, SectionSchema } from "../../schemas/section";
 
-export const argsSchema = SectionSchema;
+export const argsSchema = z.object({
+  section: SectionSchema,
+  pages: z.array(SectionPageSchema),
+});
 
 export const tool: ChatCompletionTool = {
   type: "function",
@@ -13,3 +17,5 @@ export const tool: ChatCompletionTool = {
     parameters: zodToJsonSchema(argsSchema),
   },
 };
+
+console.log("tool", JSON.stringify(tool, null, 2));

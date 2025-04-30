@@ -1,8 +1,11 @@
-import { Section } from "@/domain/types";
+import { Section, SectionPag } from "@/domain/types";
 
 import { writePage } from "./page";
 
-export async function writeSectionPage(section: Section): Promise<String[]> {
+export async function writeSectionPage(
+  section: Section,
+  pages: SectionPag[],
+): Promise<String[]> {
   const filePaths: String[] = [];
 
   const indexFilePath = writePage(`${section.slug}/_index`, {
@@ -17,7 +20,7 @@ export async function writeSectionPage(section: Section): Promise<String[]> {
   });
   filePaths.push(indexFilePath);
 
-  for (const page of section.pages) {
+  for (const page of pages) {
     const pageFielPath = writePage(`${section.slug}/${page.slug}`, {
       frontmatter: {
         title: page.title,
@@ -26,8 +29,11 @@ export async function writeSectionPage(section: Section): Promise<String[]> {
         date: new Date().toISOString(),
         draft: true,
         weight: page.weight,
+        body_generate_required: true,
       },
-      body: "",
+      body: page.chapters
+        .map((chapter) => `# ${chapter.title}\n\n ${chapter.summary}`)
+        .join("\n\n"),
     });
     filePaths.push(pageFielPath);
   }
