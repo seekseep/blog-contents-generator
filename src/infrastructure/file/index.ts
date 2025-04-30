@@ -7,6 +7,9 @@ export function writeFile(filePath: string, content: string): string {
   return filePath;
 }
 
-export function readFile(filePath: string): string {
+export function readFile(filePath: string): string | null {
+  if (!fs.existsSync(filePath)) {
+    return null;
+  }
   return fs.readFileSync(filePath, "utf-8");
 }

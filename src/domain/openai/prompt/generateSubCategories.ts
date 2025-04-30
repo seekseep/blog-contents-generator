@@ -1,11 +1,12 @@
 import { z } from "zod";
 
-import { system, user } from "../../../infrastructure/openai/util";
-import { Category } from "../../types";
+import { Category } from "@/domain/types";
+import { system, user } from "@/infrastructure/openai/util";
+
 import * as createCategories from "../tools/createCategories";
 import { PromptBuilderResult } from "./types";
 
-export function buildSubCategories(
+export function generateSubCategoriesPrompt(
   siteSummary: string,
   parentCategory: Category,
   count: number,

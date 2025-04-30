@@ -1,10 +1,11 @@
 import { z } from "zod";
 
-import { system, user } from "../../../infrastructure/openai/util";
+import { system, user } from "@/infrastructure/openai/util";
+
 import * as createHugoPage from "../tools/createHugoPage";
 import { PromptBuilderResult } from "./types";
 
-export function buildHomePagePrompt(
+export function buildGenerateHomePagePrompt(
   keyword: string,
 ): PromptBuilderResult<z.infer<typeof createHugoPage.argsSchema>> {
   return [

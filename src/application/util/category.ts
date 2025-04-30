@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-import { buildDataFilePath, parseDataOrElse } from "../../domain/hugo/util";
+import { parseDataOrElse } from "@/domain/hugo/data";
+import { buildDataFilePath } from "@/domain/hugo/file";
+import { Category } from "@/domain/types";
+
 import { CategorySchema } from "../../domain/schemas/category";
 import { readFile, writeFile } from "../../infrastructure/file";
 
@@ -24,7 +27,7 @@ export function readCategories() {
   return categories;
 }
 
-export function writeCategories(categories: any[]) {
+export function writeCategories(categories: Category[]) {
   const categoriesFilePath = getCategoriesPath();
   const categoriesJson = JSON.stringify(categories, null, 2);
   writeFile(categoriesFilePath, categoriesJson);

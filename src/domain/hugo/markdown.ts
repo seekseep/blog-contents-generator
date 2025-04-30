@@ -1,17 +1,4 @@
-import path from "path";
-import { z } from "zod";
-
 import { HugoFrontMatter, HugoPage } from "../types";
-
-export function buildPageFilePath(fileName: string): string {
-  const filePath = path.resolve("out/content", fileName + ".md");
-  return filePath;
-}
-
-export function buildDataFilePath(fileName: string): string {
-  const filePath = path.resolve("out/data", fileName + ".json");
-  return filePath;
-}
 
 export function creatFrontMatterString(frontmatter: HugoFrontMatter) {
   const lines: string[] = [];
@@ -83,19 +70,4 @@ export function parsePageContent(fileContent: string): HugoPage | null {
   const [frontmatterString, body] = fileContent.split("---").slice(1);
   const frontmatter = parseFrontMatter(frontmatterString);
   return { frontmatter, body };
-}
-
-export function parseDataOrElse<T>(
-  data: string | null,
-  schema: z.Schema<T>,
-  defaultValue: T,
-): T {
-  if (!data) return defaultValue;
-  try {
-    const parsed = JSON.parse(data);
-    return schema.parse(parsed);
-  } catch (e) {
-    console.error("Failed to parse data:", e);
-    return defaultValue;
-  }
 }

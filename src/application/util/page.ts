@@ -1,15 +1,25 @@
-import { buildPageFilePath, parsePageContent } from "../../domain/hugo/util";
-import { HugoPage } from "../../domain/types";
-import { readFile, writeFile } from "../../infrastructure/file";
+import { buildPageFilePath } from "@/domain/hugo/file";
+import { buildPageFileContent, parsePageContent } from "@/domain/hugo/markdown";
+import { Category, HugoPage } from "@/domain/types";
+import { readFile, writeFile } from "@/infrastructure/file";
 
 export function readPage(fileName: string): HugoPage | null {
   const filePath = buildPageFilePath(fileName);
   const fileContent = readFile(filePath);
+  if (!fileContent) return null;
   return parsePageContent(fileContent);
 }
 
-export function writePage(fileName: string, content: HugoPage) {
+export function writePage(fileName: string, page: HugoPage) {
   const filePath = buildPageFilePath(fileName);
-  const fileContent = JSON.stringify(content, null, 2);
+  const fileContent = buildPageFileContent(page);
   writeFile(filePath, fileContent);
+  return filePath;
+}
+
+export function readCategoryPage(category: Category): HugoPage | null {
+  const filePath = buildPageFilePath(`categories/${category.slug}/_index`);
+  const fileContent = readFile(filePath);
+  if (!fileContent) return null;
+  return parsePageContent(fileContent);
 }

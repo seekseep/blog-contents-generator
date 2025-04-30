@@ -1,10 +1,11 @@
 import { z } from "zod";
 
-import { system, user } from "../../../infrastructure/openai/util";
+import { system, user } from "@/infrastructure/openai/util";
+
 import * as createCategories from "../tools/createCategories";
 import { PromptBuilderResult } from "./types";
 
-export function buildRootCategories(
+export function buildGenerateRootCategoriesPrompt(
   siteSummary: string,
   count: number,
 ): PromptBuilderResult<z.infer<typeof createCategories.argsSchema>> {

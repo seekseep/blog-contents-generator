@@ -1,10 +1,10 @@
 import { number } from "@inquirer/prompts";
 import ora from "ora";
-import { v4 as uuid } from "uuid";
 
-import { buildRootCategories } from "../../domain/openai/prompt/buildRootCategories";
-import { mergeCategories } from "../../domain/site";
-import { callOpenAIFunction } from "../../infrastructure/openai/client";
+import { buildGenerateRootCategoriesPrompt } from "@/domain/openai/prompt/generateRootCategories";
+import { mergeCategories } from "@/domain/site";
+import { callOpenAIFunction } from "@/infrastructure/openai/client";
+
 import ApplicationError from "../errors/ApplicationError";
 import { Command } from "../types";
 import {
@@ -34,19 +34,18 @@ export const generateRootCategoriesCommand: Command<GenerateRootCategories> = {
     const homePage = readPage("_index");
     if (!homePage) throw new ApplicationError("Home page not found");
 
-    const categories = readCategories();
+    const [prompt, argsSchema] = buildGenerateRootCategoriesPrompt(
+      homePage.body,
+      count,
+    );
 
-    const [prompt, argsSchema] = buildRootCategories(homePage.body, count);
-
-    const spinner = ora("AIに問い合わせ中...").start();
+    const spinner = ora("カテゴリを生成中...").start();
     const result = await callOpenAIFunction(prompt, argsSchema);
-    const idProvidedCategories = result.categories.map((category) => ({
-      ...category,
-      id: uuid(),
-    }));
+    const categories = result.categories;
     spinner.stop();
 
-    const mergedCategories = mergeCategories(categories, idProvidedCategories);
+    const currentCategories = readCategories();
+    const mergedCategories = mergeCategories(currentCategories, categories);
     writeCategories(mergedCategories);
 
     console.info(`カテゴリファイルを更新しました: ${getCategoriesPath()}`);

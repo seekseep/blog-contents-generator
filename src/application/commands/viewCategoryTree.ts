@@ -11,16 +11,11 @@ export const viewCategoryTreeCommand: Command<void> = {
   execute: async () => {
     const categories = readCategories();
 
-    const categoryMap = new Map<string, Category>();
-    for (const category of categories) {
-      categoryMap.set(category.id, category);
-    }
-
-    const roots = categories.filter((c) => !c.parentId);
+    const roots = categories.filter((c) => !c.parentName);
 
     const printTree = (parent: Category, depth: number) => {
       console.info(`${"  ".repeat(depth)}- ${parent.name}`);
-      const children = categories.filter((c) => c.parentId === parent.id);
+      const children = categories.filter((c) => c.parentName === parent.name);
       for (const child of children) {
         printTree(child, depth + 1);
       }

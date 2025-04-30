@@ -1,11 +1,13 @@
+import { generateCategoryPagesCommand } from "./generateCategoryPages";
+import { generateHomePageCommand } from "./generateHomePage";
 import { generateRootCategoriesCommand } from "./generateRootCategories";
-import { generateSiteSummaryCommand } from "./generateSiteSummary";
 import { generateSubCategoriesCommand } from "./generateSubCategories";
 import { viewCategoryTreeCommand } from "./viewCategoryTree";
 
 export const commands = [
-  generateSiteSummaryCommand,
+  generateHomePageCommand,
   generateRootCategoriesCommand,
   generateSubCategoriesCommand,
   viewCategoryTreeCommand,
+  generateCategoryPagesCommand,
 ];
