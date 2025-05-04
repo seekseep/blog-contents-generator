@@ -17,5 +17,3 @@ export const tool: ChatCompletionTool = {
     parameters: zodToJsonSchema(argsSchema),
   },
 };
-
-console.log("tool", JSON.stringify(tool, null, 2));

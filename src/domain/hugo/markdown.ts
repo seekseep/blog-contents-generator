@@ -22,6 +22,9 @@ export function creatFrontMatterString(frontmatter: PageFrontMatter): String {
   if (typeof frontmatter.author !== "undefined") {
     lines.push(`author: ${frontmatter.author}`);
   }
+  if (typeof frontmatter.body_generate_required !== "undefined") {
+    lines.push(`body_generate_required: ${frontmatter.body_generate_required}`);
+  }
 
   lines.push("---");
 
