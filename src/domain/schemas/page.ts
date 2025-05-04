@@ -11,7 +11,7 @@ export const PageFrontMatterSchema = z.object({
   type: z.string().optional(),
   weight: z.number().optional(),
   author: z.string().optional(),
-  body_generate_required: z.boolean().optional(),
+  bodyGenerateRequired: z.boolean().optional(),
 });
 
 export const PageSchema = z.object({

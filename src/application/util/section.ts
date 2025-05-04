@@ -29,7 +29,7 @@ export async function writeSectionPage(
         date: new Date().toISOString(),
         draft: true,
         weight: page.weight,
-        body_generate_required: true,
+        bodyGenerateRequired: true,
       },
       body: page.chapters
         .map((chapter) => `# ${chapter.title}\n\n ${chapter.summary}`)

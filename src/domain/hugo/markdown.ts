@@ -22,8 +22,8 @@ export function creatFrontMatterString(frontmatter: PageFrontMatter): String {
   if (typeof frontmatter.author !== "undefined") {
     lines.push(`author: ${frontmatter.author}`);
   }
-  if (typeof frontmatter.body_generate_required !== "undefined") {
-    lines.push(`body_generate_required: ${frontmatter.body_generate_required}`);
+  if (typeof frontmatter.bodyGenerateRequired !== "undefined") {
+    lines.push(`body_generate_required: ${frontmatter.bodyGenerateRequired}`);
   }
 
   lines.push("---");
@@ -55,6 +55,7 @@ function parseFrontMatter(frontmatterString: string): PageFrontMatter {
   const slug = values.slug || "";
   const weight = values.weight ? parseInt(values.weight) : undefined;
   const author = values.author || "";
+  const bodyGenerateRequired = values.body_generate_required;
   const frontmatter: PageFrontMatter = {
     title,
     description,
@@ -64,6 +65,7 @@ function parseFrontMatter(frontmatterString: string): PageFrontMatter {
     slug,
     weight,
     author,
+    bodyGenerateRequired,
   };
 
   return frontmatter;
